@@ -10,6 +10,10 @@ const DisplayProduct = ({ products: { price, image, title, _id, quantity } }) =>
     const navigate = useNavigate()
     const handleCart = () => {
         addToCart(_id, 1)
+        toast.success('Item Added To Cart.', {
+            position: "bottom-right",
+            closeOnClick: true,
+        });
     }
     const checkInCart = () => {
         let isExist = cart?.find(item => item._id === _id)

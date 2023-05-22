@@ -1,11 +1,15 @@
-import React from 'react'
-import { Navbar, Container, NavDropdown, Nav } from 'react-bootstrap';
+import React, { useContext } from 'react'
+import { Navbar, Container, NavDropdown, Nav, Badge } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import SearchBox from '../Search/SearchBox';
-import './Header.css'
+import './Header.css';
+import productContext from '../../context/product/productContext'
+import authContext from '../../context/auth/authContext'
 
 const Header = () => {
     let userInfo = JSON.parse(localStorage.getItem('user'));
+    const {cart, wishlist} = useContext(productContext);
+    const {loginUser, resetAuth} = useContext(authContext);
     const navigate = useNavigate()
     return (
         <header>
@@ -20,27 +24,28 @@ const Header = () => {
                         <Nav className="ms-auto">
                             <Nav.Link >
                             <Link to='/cart'>
-                                <i className='fas fa-shopping-cart' ></i> Cart
+                                <i className='fas fa-shopping-cart' ></i> Cart {cart.length > 0 && <Badge bg="secondary">{cart.length}</Badge>}
                             </Link>
                             </Nav.Link>
                             <Nav.Link >
                                 <Link to='/wishlist'>
-                                <i className="fas fa-light fa-heart"></i> Whislist
+                                <i className="fas fa-light fa-heart"></i> Whislist  {wishlist.length > 0 && <Badge bg="secondary">{wishlist.length}</Badge>}
                                 </Link>
                             </Nav.Link>
                             {
-                                userInfo ? (
-                                    <NavDropdown title={userInfo.name} id="username" >
+                                (loginUser?.foundUser?.firstName || userInfo) ? (
+                                    <NavDropdown title={userInfo?.name} id="username" >
                                         {/* <NavDropdown.Item>Profile</NavDropdown.Item> */}
                                         <NavDropdown.Item onClick={() => {
                                             localStorage.removeItem('user');
+                                            resetAuth()
                                             navigate('/signin')
                                         }} >Logout</NavDropdown.Item>
                                     </NavDropdown>
                                 )
                                     :
                                     <Nav.Link >
-                                        <i className='fas fa-user' ></i> Sign In
+                                        <Link to='/signin'><i className='fas fa-user' ></i> Sign In</Link>
                                     </Nav.Link>
                             }
 

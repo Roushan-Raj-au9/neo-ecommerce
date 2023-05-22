@@ -54,12 +54,16 @@ const AuthState = ({ children }) => {
     const setLoading = () => {
         dispatch({ type: 'SET_LOADING' })
     }
+    const resetAuth = () => {
+        dispatch({ type: 'RESET_AUTH' })
+    }
     return (
         <AuthContext.Provider value={{
             loginUser: state.loginUser,
             loading: state.loading,
             login,
             register,
+            resetAuth,
         }}>
             {children}
         </AuthContext.Provider>

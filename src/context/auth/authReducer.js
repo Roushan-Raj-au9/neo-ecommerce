@@ -7,6 +7,12 @@ const AuthReducer = (state, action) => {
                 loginUser: action.payload,
                 loading: false
             }
+        case 'RESET_AUTH':
+            return{
+                ...state,
+                loginUser: {},
+                loading: false
+            }
         case 'SET_LOADING':
             return {
                 ...state,
