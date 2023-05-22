@@ -126,17 +126,17 @@ const SignUp = () => {
                             <span className= "cpassword-show" onClick={ctogglePassword} >
                                 {cpasswordShown ?  <i class="fa fa-eye" aria-hidden="true"></i> :  <i class="fa fa-eye-slash" aria-hidden="true"></i>}
                             </span>
-                        </Form.Group>
+                        </Form.Group> 
 
                         <Button type='submit' disabled={loading} variant='primary' className='my-2 btn-dark' >
-                            {loading ? <Spinner />:'Sign In'}
+                            {loading ? <Spinner />:'Sign Up'}
                         </Button>
 
                     </Form>
 
                     <Row className='py-3' >
                         <Col>
-                            New Customer ? <Link to='/signup' className='text-decoration-underline'> SingUp </Link>
+                            Existing Customer ? <Link to='/signin' className='text-decoration-underline'> SingIn </Link>
                         </Col>
                     </Row>
                 </Col>

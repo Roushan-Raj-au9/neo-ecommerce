@@ -6,14 +6,22 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const DisplayProduct = ({ products: { price, image, title, _id, quantity } }) => {
+    let userInfo = JSON.parse(localStorage.getItem('user'));
     const { cart, addToCart, addToWhislist, deleteWishlist, wishlist } = useContext(productContext);
     const navigate = useNavigate()
     const handleCart = () => {
-        addToCart(_id, 1)
-        toast.success('Item Added To Cart.', {
-            position: "bottom-right",
-            closeOnClick: true,
-        });
+        if(userInfo){
+            addToCart(_id, 1)
+            toast.success('Item Added To Cart.', {
+                position: "bottom-right",
+                closeOnClick: true,
+            });
+        }else{
+            toast.warning('SignIn is Required.', {
+                position: "bottom-right",
+                closeOnClick: true,
+            });
+        }
     }
     const checkInCart = () => {
         let isExist = cart?.find(item => item._id === _id)
@@ -40,22 +48,36 @@ const DisplayProduct = ({ products: { price, image, title, _id, quantity } }) =>
                 {checkInWhislist() ?
                     <Button type='button' variant='light' className='mx-3'
                         onClick={() => {
-                            deleteWishlist(_id)
-                            toast.success('Item Removed From Wishlist.', {
-                                position: "bottom-right",
-                                closeOnClick: true,
-                            });
+                            if(userInfo){
+                                deleteWishlist(_id)
+                                toast.success('Item Removed From Wishlist.', {
+                                    position: "bottom-right",
+                                    closeOnClick: true,
+                                });
+                            }else{
+                                toast.warning('SignIn is Required.', {
+                                    position: "bottom-right",
+                                    closeOnClick: true,
+                                });
+                            }
                         }}
                     >
                         <i className="fa-solid fa-heart" style={{ color: '#FF1B1B' }}></i>
                     </Button> :
                     <Button type='button' variant='light' className='mx-3'
                         onClick={() => {
-                            addToWhislist(_id)
-                            toast.success('Item Added To Wishlist.', {
-                                position: "bottom-right",
-                                closeOnClick: true,
-                            });
+                            if(userInfo){
+                                addToWhislist(_id)
+                                toast.success('Item Added To Wishlist.', {
+                                    position: "bottom-right",
+                                    closeOnClick: true,
+                                });
+                            }else{
+                                toast.warning('SignIn is Required.', {
+                                    position: "bottom-right",
+                                    closeOnClick: true,
+                                });
+                            }
                         }}
                     >
                         <i className="fa-regular fa-heart"></i>
