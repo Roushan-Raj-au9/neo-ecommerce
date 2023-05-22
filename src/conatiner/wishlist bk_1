@@ -1,0 +1,108 @@
+import React, { useContext, useEffect } from 'react'
+import { Alert, Button, Card, Col, Container, Image, ListGroup, Row } from 'react-bootstrap'
+import { Link, useLocation, useParams } from 'react-router-dom'
+import productContext from '../context/product/productContext';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+const Wishlist = () => {
+    const { cart, loading, addToCart, updateCart, deleteItemOfCart, addToWhislist, wishlist, deleteWishlist, getWishlist } = useContext(productContext);
+    useEffect(() => {
+        getWishlist()
+        //eslint-disable-next-line
+    }, [])
+    const checkInCart = (id) => {
+        let isExist = cart?.find(item => item._id === id)
+        if (isExist) return true
+        return false
+    }
+    const wishlistInCart = cart?.filter(({_id}) => wishlist?.some((item) => _id === item._id))
+    console.log("wishlistInCart >> ", wishlistInCart)
+    const checkOne = wishlist?.map((item) => wishlistInCart?.filter(({_id}) => item._id !== _id))
+    const renderCart = () => {
+        if(wishlistInCart.length > 0){
+            return (
+                wishlistInCart.map(({_id, qty}) => (
+                    <React.Fragment key={_id}>
+                    <h3 onClick={() => {
+                        qty > 1 && updateCart(_id, 'decrement')
+                        qty > 1 && toast.success('Item Removed To Cart.', {
+                            position: "bottom-right",
+                            closeOnClick: true,
+                        });
+                    }} style={{ cursor: 'pointer' }}>-</h3>
+                    <Button disabled style={{ height: '37px' }}>{qty}</Button>
+                    <h3 onClick={() => {
+                        updateCart(_id, 'increment')
+                        toast.success('Item Added To Cart.', {
+                            position: "bottom-right",
+                            closeOnClick: true,
+                        });
+                    }} style={{ cursor: 'pointer' }}>+</h3>
+                </React.Fragment>
+                ))
+            )
+        }
+    }
+    console.log("cart ..", cart)
+    console.log("wishlist ..", wishlist)
+    console.log("checkOne ..", checkOne)
+    return (
+        <Container>
+            <Row>
+                <Col md={8}>
+                    <h1>Shopping Wishlist</h1>
+                    {wishlist.length === 0 ? <Alert variant='warning'>Your Wishlist is Empty ! <Link to='/' className='text-primary text-decoration-underline'>Add Items To Wishlist</Link></Alert> : (
+                        <ListGroup variant='flush'>
+                            {wishlist.map(({ _id, image, title, price, quantity, qty }) => <ListGroup.Item key={_id}>
+                                <Row>
+                                    <Col md={2} >
+                                        <Image src={image} alt={title} rounded height='55px' width='118px' />
+                                    </Col>
+                                    <Col md={3} >
+                                        <Link to={`/product/${_id}`} className='link-primary'>
+                                            {title}
+                                        </Link>
+                                    </Col>
+                                    <Col md={2} >
+                                        ₹{price}
+                                    </Col>
+                                    <Col md={2} className='d-flex justify-content-around' >
+                                        {
+                                            checkInCart(_id) ?
+                                            
+                                            renderCart() :
+                                                <Button
+                                                    className='btn-dark btn-block'
+                                                    type='button'
+                                                    disabled={quantity === 0}
+                                                    style={{height:'46px'}}
+                                                    onClick={() => addToCart(_id)}
+                                                >
+                                                    Add To Cart
+                                                </Button>
+                                        }
+                                    </Col>
+                                    <Col md={3} >
+                                        <Button type='button' variant='light' className='mx-3'
+                                            onClick={() => {
+                                                deleteWishlist(_id)
+                                                toast.success('Item Removed From Wishlist.', {
+                                                    position: "bottom-right",
+                                                    closeOnClick: true,
+                                                });
+                                            }}
+                                        >
+                                            <i className="fa-solid fa-heart" style={{ color: '#FF1B1B' }}></i>
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            </ListGroup.Item>)}
+                        </ListGroup>)}
+                </Col>
+            </Row>
+        </Container>
+    )
+}
+
+export default Wishlist;

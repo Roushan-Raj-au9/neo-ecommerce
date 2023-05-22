@@ -1,0 +1,40 @@
+section{
+    background: #fff;
+    font-family: Poppins;
+    display: flex;
+    justify-content: center;
+}
+
+.page_404 img
+{
+    width: 100%;
+}
+
+.four_zero_four_bg
+{
+    background: url('./bg.gif');
+    height: 400px;
+    background-position: center;
+}
+.navigation_link{
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    background: #39ac31;
+    display: inline-block;
+}
+
+.content_box_404 h3
+{
+    margin: 0px;
+}
+.four_zero_four_bg h1{
+    margin: 10px 0px;
+}
+
+.navigation_link:hover
+{
+    text-decoration: none;
+    color: #fff;
+    opacity: 0.9;
+}
